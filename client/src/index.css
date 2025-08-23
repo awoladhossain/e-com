@@ -128,6 +128,9 @@ nav {
 .nav__icons span a:hover {
   color: var(--primary-color);
 }
+/* .active {
+  color: var(--primary-color) !important;
+} */
 
 .header__container {
   min-height: 650px;

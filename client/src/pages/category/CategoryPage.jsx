@@ -1,18 +1,22 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import products from "../../data/products.json";
 import ProductsCard from "../product/ProductsCard";
-import { useEffect } from "react";
-
 const CategoryPage = () => {
   const { categoryName } = useParams();
-  console.log(useParams());
-  useEffect(()=>{
-    // Fetch products based on categoryName
-    
-  },[])
+  // console.log(useParams());
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  useEffect(() => {
+    const filtered = products.filter(
+      (product) => product.category.toLowerCase() === categoryName.toLowerCase()
+    );
+    setFilteredProducts(filtered);
+  }, [categoryName]);
+console.log(filteredProducts)
   return (
     <>
       <section className="section__container bg-primary-light">
-        <h1>Category Details</h1>
         <h2 className="section__header capitalize">
           Category Name: {categoryName}
         </h2>
@@ -24,7 +28,7 @@ const CategoryPage = () => {
 
       {/* Product cart */}
       <div className="section__container">
-        <ProductsCard products={{}} />
+        <ProductsCard products={filteredProducts} />
       </div>
     </>
   );

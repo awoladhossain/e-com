@@ -1,11 +1,15 @@
 import { Outlet } from "react-router-dom";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
     <div>
       <Navbar />
-      <Outlet />
+      <main className="min-h-screen">
+        <Outlet />
+      </main>
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,5 @@
+import { Link, NavLink } from "react-router-dom";
 import avatar from "../assets/avatar.png";
-import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -7,28 +7,28 @@ const Navbar = () => {
       <nav className="max-w-screen-2xl mx-auto px-4 flex justify-between items-center">
         <ul className="nav__links">
           <li className="link">
-            <Link to="/">Home</Link>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li className="link">
-            <Link to="/shop">Shop</Link>
+            <NavLink to="/shop">Shop</NavLink>
           </li>
           <li className="link">
-            <Link to="/">Pages</Link>
+            <NavLink to="/pages">Pages</NavLink>
           </li>
           <li className="link">
-            <Link to="/contact">Contact</Link>
+            <NavLink to="/contact">Contact</NavLink>
           </li>
         </ul>
         <div className="nav__logo">
-          <Link to="/">
+          <NavLink to="/">
             Lebaba<span>.</span>
-          </Link>
+          </NavLink>
         </div>
         <div className="nav__icons relative">
           <span>
-            <Link to="/search">
+            <NavLink to="/search">
               <i className="ri-search-line"></i>
-            </Link>
+            </NavLink>
           </span>
           <span>
             <button className="hover:text-primary">
@@ -39,11 +39,14 @@ const Navbar = () => {
             </button>
           </span>
           <span>
-            <img
-              src={avatar}
-              alt="User Avatar"
-              className="size-6 rounded-full cursor-pointer"
-            />
+            <Link to="/login">
+              {" "}
+              <img
+                src={avatar}
+                alt="User Avatar"
+                className="size-6 rounded-full cursor-pointer"
+              />
+            </Link>
           </span>
         </div>
       </nav>
