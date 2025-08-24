@@ -7,9 +7,13 @@ const generateToken = async (userId) => {
     if (!user) {
       throw new Error("User not found");
     }
-    const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: userId, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
     return token;
   } catch (error) {
     console.log(error);

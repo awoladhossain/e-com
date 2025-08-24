@@ -40,12 +40,24 @@ export const loginUser = async (req, res) => {
       return res.status(400).send("Invalid credentials");
     }
     const token = await generateToken(user._id);
-    res
-      .status(200)
-      .send({
-        token,
-        user: { id: user._id, username: user.username, email: user.email },
-      });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+    res.status(200).send({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        profileImage: user.profileImage,
+        bio: user.bio,
+        profession: user.profession,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
