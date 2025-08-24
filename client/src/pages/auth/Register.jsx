@@ -1,16 +1,15 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-
-const Login = () => {
+import { useForm } from "react-hook-form";
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm();
+
   const onSubmit = (data) => console.log(data);
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-200 px-4">
@@ -24,12 +23,26 @@ const Login = () => {
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-800">ShopNest</h1>
           <p className="mt-2 text-gray-500">
-            Welcome back! Please login to continue.
+            Create your account to start shopping.
           </p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5">
+          {/* Username */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              {...register("username", { required: true })}
+              type="text"
+              placeholder="Your username"
+              className="mt-1 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400 outline-none"
+            />
+          </div>
+
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Email
@@ -40,9 +53,9 @@ const Login = () => {
               placeholder="you@example.com"
               className="mt-1 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400 outline-none"
             />
-            {errors.email && <span>This field is required</span>}
           </div>
 
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Password
@@ -54,7 +67,6 @@ const Login = () => {
                 placeholder="••••••••"
                 className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400 outline-none"
               />
-              {errors.password && <span>This field is required</span>}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -65,26 +77,26 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Remember + Forgot password */}
-          <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center space-x-2 text-gray-600">
-              <input
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-indigo-500"
-              />
-              <span>Remember me</span>
-            </label>
-            <a href="#" className="text-indigo-600 hover:underline">
-              Forgot password?
-            </a>
-          </div>
+          {/* Terms & Conditions */}
+          {/* <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <input
+              type="checkbox"
+              className="h-4 w-4 rounded border-gray-300 text-indigo-500"
+            />
+            <span>
+              I agree to the{" "}
+              <a href="#" className="text-indigo-600 hover:underline">
+                Terms & Conditions
+              </a>
+            </span>
+          </div> */}
 
           {/* CTA Button */}
           <button
             type="submit"
             className="w-full rounded-xl bg-indigo-600 py-3 text-white font-semibold shadow-md hover:bg-indigo-700 transition"
           >
-            Sign In
+            Create Account
           </button>
         </form>
 
@@ -95,7 +107,7 @@ const Login = () => {
           <hr className="flex-1 border-gray-300" />
         </div>
 
-        {/* Social Login */}
+        {/* Social Signup */}
         {/* <div className="space-y-3">
           <button className="w-full flex items-center justify-center gap-2 rounded-xl border border-gray-300 py-3 text-gray-700 hover:bg-gray-50 transition">
             <img
@@ -103,7 +115,7 @@ const Login = () => {
               alt="Google"
               className="h-5 w-5"
             />
-            Sign in with Google
+            Sign up with Google
           </button>
           <button className="w-full flex items-center justify-center gap-2 rounded-xl border border-gray-300 py-3 text-gray-700 hover:bg-gray-50 transition">
             <img
@@ -111,18 +123,18 @@ const Login = () => {
               alt="Facebook"
               className="h-5 w-5"
             />
-            Sign in with Facebook
+            Sign up with Facebook
           </button>
         </div> */}
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-600">
-          Don’t have an account?{" "}
+          Already have an account?{" "}
           <Link
-            to="/register"
+            to="/login"
             className="text-indigo-600 font-medium hover:underline"
           >
-            Sign up
+            Login
           </Link>
         </p>
       </motion.div>
@@ -130,4 +142,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
