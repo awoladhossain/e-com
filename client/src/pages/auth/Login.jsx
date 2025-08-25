@@ -2,16 +2,38 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../../redux/features/users/authApi";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const [loginUser, { isError }] = useLoginUserMutation();
+  const navigate = useNavigate();
+
+  if (isError) {
+    console.log("Error logging in");
+  }
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await loginUser(data).unwrap();
+      console.log(res);
+      if (res.error) {
+        console.error("Error logging in:", res.error);
+      }
+      navigate("/");
+    } catch (error) {
+      setMessage("Error logging in");
+      console.error("Error logging in:", error);
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-200 px-4">
       <motion.div
@@ -55,6 +77,7 @@ const Login = () => {
                 className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400 outline-none"
               />
               {errors.password && <span>This field is required</span>}
+              {message && <span className="text-red-500">{message}</span>}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}

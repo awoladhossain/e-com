@@ -1,16 +1,33 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../../redux/features/users/authApi";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const {
-    register,
-    handleSubmit,
-  } = useForm();
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => console.log(data);
+  const [registerUser, { isError }] = useRegisterMutation();
+
+  if (isError) {
+    console.log("Error logging in");
+  }
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await registerUser(data).unwrap();
+      console.log(res);
+      if (res.error) {
+        console.error("Error registering user:", res.error);
+      }
+      navigate("/login");
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-200 px-4">
       <motion.div
