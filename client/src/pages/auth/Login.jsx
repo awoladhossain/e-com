@@ -2,8 +2,10 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../../redux/features/users/authApi";
+import { setUser } from "../../redux/features/users/authSlice";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +17,7 @@ const Login = () => {
   } = useForm();
   const [loginUser, { isError }] = useLoginUserMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   if (isError) {
     console.log("Error logging in");
@@ -24,6 +27,8 @@ const Login = () => {
     try {
       const res = await loginUser(data).unwrap();
       console.log(res);
+      const { user } = res;
+      dispatch(setUser({ user }));
       if (res.error) {
         console.error("Error logging in:", res.error);
       }
