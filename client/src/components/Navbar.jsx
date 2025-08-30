@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import avatar from "../assets/avatar.png";
+import { useLogoutUserMutation } from "../redux/features/users/authApi";
 import { logout } from "../redux/features/users/authSlice";
 
 const Navbar = () => {
@@ -11,17 +12,38 @@ const Navbar = () => {
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [logoutUser] = useLogoutUserMutation();
 
   const handleDropDown = () => {
     setDropDownOpen(!dropDownOpen);
   };
-  const handleLogout = () => {
+
+  // const handleLogout = async () => {
+  //   try {
+  //     await logoutUser().unwrap();
+  //     dispatch(logout());
+  //     // Add a small delay
+  //     setTimeout(() => {
+  //       navigate("/");
+  //     }, 100);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const handleLogout = async () => {
+    console.log("Starting logout...");
     try {
+      const result = await logoutUser().unwrap();
+      console.log("Logout API response:", result);
+
       dispatch(logout());
-      navigate("/")
+      console.log("Redux state cleared");
+
+      console.log("About to navigate to /");
+      navigate("/");
+      console.log("Navigation called");
     } catch (error) {
-      console.log(error);
+      console.log("Logout error:", error);
     }
   };
   const navLinks = [
@@ -163,11 +185,12 @@ const Navbar = () => {
               </>
             ) : (
               <Link to="/login">
-                <img
+                {/* <img
                   src={avatar}
                   alt="User Avatar"
                   className="w-8 h-8 rounded-full border border-gray-200 hover:scale-105 transition cursor-pointer"
-                />
+                /> */}
+                <p>login</p>
               </Link>
             )}
           </span>
