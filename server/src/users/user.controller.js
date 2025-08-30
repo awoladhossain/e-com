@@ -43,7 +43,7 @@ export const loginUser = async (req, res) => {
     const token = await generateToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: "None",
     });
     // res.status(200).send({
@@ -88,11 +88,60 @@ export const logoutUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const user = await User.find({},'email role').sort({ createdAt: -1 });
+    const user = await User.find({}, "email role").sort({ createdAt: -1 });
     if (!user) {
       return errorResponse(res, 404, "User not found");
     }
     successResponse(res, 200, "User retrieved successfully", user);
+  } catch (error) {
+    errorResponse(res, 500, "Server Error", error);
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return errorResponse(res, 404, "User not found");
+    }
+    successResponse(res, 200, "User deleted successfully");
+  } catch (error) {
+    errorResponse(res, 500, "Server Error", error);
+  }
+};
+
+export const updateUserRole = async (req, res) => {
+  const { id } = req.params;
+  const { role } = req.body;
+  try {
+    const user = await User.findByIdAndUpdate(
+      id,
+      { role },
+      { new: true }
+    ).select("email role");
+    if (!user) {
+      return errorResponse(res, 404, "User not found");
+    }
+    successResponse(res, 200, "User role updated successfully", user);
+  } catch (error) {
+    errorResponse(res, 500, "Server Error", error);
+  }
+};
+
+export const editUserProfile = async (req, res) => {
+  const { id } = req.params;
+  const { username, profileImage, bio, profession } = req.body;
+  try {
+    const user = await User.findByIdAndUpdate(
+      id,
+      { username, profileImage, bio, profession },
+      { new: true }
+    ).select("-password");
+    if (!user) {
+      return errorResponse(res, 404, "User not found");
+    }
+    successResponse(res, 200, "User profile updated successfully", user._doc);
   } catch (error) {
     errorResponse(res, 500, "Server Error", error);
   }
