@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import ConnectDB from "./src/db/db.js";
+import productRoutes from "./src/products/product.routes.js";
+import reviewRoutes from "./src/reviews/review.routes.js";
 import userRoutes from "./src/users/user.routes.js";
 dotenv.config();
 
@@ -22,6 +24,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 ConnectDB();
 app.listen(process.env.PORT, () => {
