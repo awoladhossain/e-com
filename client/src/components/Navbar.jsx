@@ -18,18 +18,6 @@ const Navbar = () => {
     setDropDownOpen(!dropDownOpen);
   };
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await logoutUser().unwrap();
-  //     dispatch(logout());
-  //     // Add a small delay
-  //     setTimeout(() => {
-  //       navigate("/");
-  //     }, 100);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const handleLogout = async () => {
     console.log("Starting logout...");
     try {
