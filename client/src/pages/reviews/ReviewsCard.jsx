@@ -46,7 +46,10 @@ const ReviewsCard = ({ reviews }) => {
 
       {/* Add comment section */}
       <div className="mt-12">
-        <button className="px-6 py-3 bg-primary text-white rounded-md flex items-center gap-2">
+        <button
+          onClick={handleOpenModal}
+          className="px-6 py-3 bg-primary text-white rounded-md flex items-center gap-2"
+        >
           <i className="ri-pencil-line mr-2"></i> Add A Comment
         </button>
       </div>
