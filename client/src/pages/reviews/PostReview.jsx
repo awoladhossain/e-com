@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFetchSingleProductByIdQuery } from "../../redux/features/products/productsApi";
 import { usePostReviewMutation } from "../../redux/features/reviews/reviewsApi";
 
@@ -9,8 +9,11 @@ const PostReview = ({ isOpen, handleCloseModal }) => {
   const { user } = useSelector((state) => state.auth);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const navigate = useNavigate();
 
-  const { refetch } = useFetchSingleProductByIdQuery(id, { skip: !id });
+  const { refetch } = useFetchSingleProductByIdQuery(id, {
+    skip: !id || id === undefined,
+  });
   const handleRating = (value) => {
     setRating(value);
   };
@@ -19,6 +22,13 @@ const PostReview = ({ isOpen, handleCloseModal }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(`Rating: ${rating}, Comment: ${comment}`);
+    // Guard: Don't proceed if ID invalid
+    if (!id || id === "undefined") {
+      console.error("Invalid product ID. Cannot post review.");
+      // Optionally show UI error: alert('Invalid product. Please try again.');
+      handleCloseModal();
+      return;
+    }
     const newReview = {
       comment: comment,
       rating: rating,
@@ -26,6 +36,12 @@ const PostReview = ({ isOpen, handleCloseModal }) => {
       productId: id,
     };
     console.log(newReview);
+    if (!user) {
+      alert("You must be logged in to post a review.");
+      handleCloseModal();
+      navigate("/login");
+      return;
+    }
     try {
       const response = await postReview(newReview).unwrap();
       console.log("Review posted successfully:", response);

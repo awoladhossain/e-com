@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from "./features/cart/cartSlice";
 import { productsApi } from "./features/products/productsApi";
 import { reviewsApi } from "./features/reviews/reviewsApi";
 import { authApi } from "./features/users/authApi";
@@ -12,6 +13,8 @@ export const store = configureStore({
     [productsApi.reducerPath]: productsApi.reducer,
     // reviews api and reducers
     [reviewsApi.reducerPath]: reviewsApi.reducer,
+    // cart
+    cart: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
